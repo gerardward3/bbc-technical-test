@@ -1,3 +1,4 @@
+from random import randint
 import pygame
 
 # global variables
@@ -19,7 +20,7 @@ WHITE = (255, 255, 255)
 pygame.init()
 screen = pygame.display.set_mode([SCREEN_HEIGHT, SCREEN_WIDTH])
     
-# creates grid
+# creates blank grid, each cell = 0 (dead)
 def create_grid():
     grid = []
     for row in range(GRID_HEIGHT):
@@ -48,7 +49,7 @@ def evolve(grid):
             cell = grid[row][column]
             neighbours = count_neighbours(grid, row, column)
             if cell == 0:
-                if neighbours === 3:
+                if neighbours == 3:
                     cell = 1
             else:
                 if neighbours < 2 or neighbours > 3:
@@ -57,22 +58,31 @@ def evolve(grid):
     return next_grid           
 
 # counts neighbour cells of a cell    
-# def count_neighbours(grid, x, y):
-
+def count_neighbours(grid, x, y):
+    neighbours = [[x - 1, y - 1], [x, y - 1], [x + 1, y - 1], [x - 1, y], [x + 1, y], [x - 1, y + 1], [x, y + 1], [x + 1, y + 1]]
+    neighbour_count = 0
+    for n in neighbours:
+        if n[0] >= 0 and n[0] < GRID_WIDTH and n[1] >= 0 and n[1] < GRID_HEIGHT:
+            neighbour_count += grid[n[0]][n[1]]
+    return neighbour_count
     
 def main():
     done = False
     clock = pygame.time.Clock()
     grid = create_grid()
+    for x in range(GRID_WIDTH):
+        for y in range(GRID_HEIGHT):
+            grid[x][y] = randint(0,1)
+            
     while not done:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
-                
+            #elif event.type == pygame.MOUSEBUTTONDOWN:
         grid = evolve(grid)
         screen.fill(BLACK)
         draw_grid(grid)
-        clock.tick(20)
+        clock.tick(5)
         pygame.display.flip()
         
     pygame.quit()
