@@ -3,7 +3,7 @@
 # Date - 03/02/2019
 # Game of Life
 #
-# Assumptions
+# - Requires Python 3 and Pygame
 # - Game is played on 25 x 25 grid, can be changed by editing GRID_HEIGHT and GRID_WIDTH variables
 # - Live cells are white, dead cells are black
 # - Seeded grid randomly generated at beginning of game
@@ -76,10 +76,10 @@ def evolve(grid):
             cell = grid[row][column]
             neighbours = count_neighbours(grid, row, column)
             if cell == 0:
-                if neighbours == 3:     # Checks for Scenario 4
+                if neighbours == 3:     # Checks for Scenario 4 (Creation of Life)
                     cell = 1
             else:
-                if neighbours < 2 or neighbours > 3:    # Checks for Scenario 1, 2 and 3
+                if neighbours < 2 or neighbours > 3:    # Checks for Scenario 1 (Underpopulation), Scenario 2 (Overcrowding) and Scenario 3 (Survival)
                     cell = 0
             next_grid[row][column] = cell
     return next_grid           
